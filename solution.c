@@ -3,15 +3,16 @@
 #include <string.h>
 #include <dirent.h>
 int DirTree(char* dir,char* res[],char* file){
-    int tr=0,fl=0;
-    char* way_res[500],tmp[500],way[5000];
+    int tr=0,fl=0; 
+    static int i=0;
+    char way_res[500],tmp[500],way[5000];
     DIR* direct=opendir(dir);
     FILE* fp;
     struct dirent* dr;
     strcpy(way_res,dir);
     strcat(way_res,"/");
-    while(dr=readdir(direct)){
-        if(!strstr(dr->d_name,".")){
+    for(dr=readdir(direct);dr!=NULL;dr=readdir(direct))
+        if(strstr(dr->d_name,".")=NULL){
             strcpy(way,way_res);
             strcpy(way,dr->d_name);
             fl+=DirTree(way,res,file);
@@ -24,16 +25,15 @@ int DirTree(char* dir,char* res[],char* file){
             if(strstr(tmp,"\n")){
                 *(strstr(tmp,"\n"))='\0';
             }
-            else if(!strcmp(tmp,"Minotaur")){
-                strcpy(result[i++],way_res);
+            if(!strcmp(tmp,"Minotaur")){
+                strcpy(res[i++],way_res);
                 fclose(fp);
-                closedir(dr);
-                return fl;
+               break;
             }
             else if(!strcmp(tmp,"Deadlock")){
                 fl++;
                 fclose(fp);
-                closedir(dr);
+                closedir(direct);
                 return fl;
             }
             else if(strstr(tmp,".txt")){
@@ -58,7 +58,7 @@ int DirTree(char* dir,char* res[],char* file){
 				}
             }
         }
-    }
+    
     closedir(direct);
     return fl;
 }
@@ -74,8 +74,8 @@ void back(char* mas[]){
 			mas[j] = tmp;
 		}
 	for (i = k; i < 3000; i++) {
-		free(array[i]);
-		array[i] = NULL;
+		free(mas[i]);
+		mas[i] = NULL;
 	}
 
 }
