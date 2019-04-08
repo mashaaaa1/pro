@@ -5,26 +5,26 @@
 int DirTree(char* dir,char* res[],char* file){
     int tr=0,fl=0; 
     static int i=0;
-    char way_res[500],tmp[500],way[5000];
+    char way_res[1000]="",tmp[100]="",way[1000]="";
     DIR* direct=opendir(dir);
     FILE* fp;
     struct dirent* dr;
     strcpy(way_res,dir);
     strcat(way_res,"/");
-    for(dr=readdir(direct);dr!=NULL;dr=readdir(direct))
-        if(strstr(dr->d_name,".")=NULL){
+    for(dr=readdir(direct);dr!=NULL;dr=readdir(direct)){
+        if(strstr(dr->d_name,".")==NULL){
             strcpy(way,way_res);
             strcpy(way,dr->d_name);
             fl+=DirTree(way,res,file);
         }
-        else if(!strcmp(dr->d_name,file)){
+        else if(!strcmp(file,dr->d_name)){
             strcat(way_res,dr->d_name);
             fp=fopen(way_res,"r");
-            tr++;
             fgets(tmp,100,fp);
             if(strstr(tmp,"\n")){
-                *(strstr(tmp,"\n"))='\0';
+                *strstr(tmp,"\n")='\0';
             }
+            tr++;
             if(!strcmp(tmp,"Minotaur")){
                 strcpy(res[i++],way_res);
                 fclose(fp);
@@ -38,7 +38,7 @@ int DirTree(char* dir,char* res[],char* file){
             }
             else if(strstr(tmp,".txt")){
                 fl+=DirTree("./labyrinth", res, strstr(tmp, " ") + 1);
-                while (fgets(tmp, 150, fp) && strstr(tmp, ".txt")) {
+                while (fgets(tmp, 100, fp) && strstr(tmp, ".txt")) {
 					tr++;
 					if(strstr(tmp, "\n")){
 					    *strstr(tmp, "\n") = '\0';
@@ -58,7 +58,7 @@ int DirTree(char* dir,char* res[],char* file){
 				}
             }
         }
-    
+    }
     closedir(direct);
     return fl;
 }
@@ -75,7 +75,7 @@ void back(char* mas[]){
 		}
 	for (i = k; i < 3000; i++) {
 		free(mas[i]);
-		mas[i] = NULL;
+		//mas[i] = NULL;
 	}
 
 }
